@@ -10,11 +10,11 @@ export class Publisher {
   @Column({ length: 256 })
   name: string;
 
-  @Column('bigint')
+  @Column()
   siret: number;
 
   @IsPhoneNumber(null)
-  @Column({ length: 20 })
+  @Column({type: 'varchar', length: 20 })
   phone: string;
 
   @OneToMany(type => Game, game => game.publisher)
