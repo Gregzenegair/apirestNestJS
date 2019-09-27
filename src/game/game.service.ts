@@ -15,21 +15,19 @@ export class GameService {
         return this.gameRepository.find();
     }
 
-    async getUser(id: number): Promise<Game[]> {
-        return await this.gameRepository.find({
-            where: [{ "id": id }]
-        });
+    async findOne(id: number): Promise<Game> {
+        return await this.gameRepository.findOne(id);
     }
 
-    async createGame(user: Game) {
-        this.gameRepository.save(user)
+    async createGame(game: Game) {
+        return await this.gameRepository.save(game)
     }
 
-    async updateGame(user: Game) {
-        this.gameRepository.save(user)
+    async updateGame(game: Game) {
+        return await this.gameRepository.save(game)
     }
 
-    async deleteGame(user: Game) {
-        this.gameRepository.delete(user);
+    async deleteGame(id: number) {
+        return await this.gameRepository.delete(id);
     }
 }

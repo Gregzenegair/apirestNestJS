@@ -1,6 +1,7 @@
-import { Controller, Get, Param, Delete, Put, Post, Body, BadRequestException } from '@nestjs/common';
+import { Controller, Get, Param, Delete, Put, Post, Body, Res, HttpStatus } from '@nestjs/common';
 import { Publisher } from './publisher.entity';
 import { PublisherService } from './publisher.service';
+import { Response } from 'express';
 
 @Controller('publishers')
 export class PublisherController {
@@ -8,27 +9,26 @@ export class PublisherController {
   constructor(private publisherService :PublisherService) {
   }
 
-  @Get()
-  findAll(): Promise<Publisher[]> {
-    return this.publisherService.findAll();
+  @Get(':id')
+  async findOne(@Param('id')id :number): Promise<Publisher> {
+    return await this.publisherService.findOne(id);
   }
 
   @Post()
-  create(@Body() publisher: Publisher) {
-    try {
-      return this.publisherService.createPublisher(publisher);
-    } catch (error) {
-      throw new BadRequestException(error);
-    }      
+  async create(@Res() response: Response, @Body() game: Publisher) {
+    const out = await this.publisherService.createPublisher(game).catch(err => response.status(HttpStatus.CONFLICT).send());
+    response.send(out);
   }
 
   @Put()
-  update(@Body() publisher: Publisher) {
-      return this.publisherService.updatePublisher(publisher);
+  async update(@Res() response: Response, @Body() game: Publisher) {
+    const out = await this.publisherService.updatePublisher(game).catch(err => response.status(HttpStatus.CONFLICT).send());
+    response.send(out);
   }
 
   @Delete(':id')
-  deleteUser(@Param() params) {
-      return this.publisherService.deletePublisher(params.id);
+  async delete(@Res() response: Response, @Param('id') id: number) {
+    const out = await this.publisherService.deletePublisher(id).catch(err => response.status(HttpStatus.CONFLICT).send());
+    response.send(out);
   }
 }

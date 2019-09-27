@@ -4,9 +4,10 @@ import { AppService } from "./app.service";
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { GameModule } from './game/game.module';
 import { PublisherModule } from './publisher/publisher.module';
+import { MyValidationPipe } from './validation.pipe';
 
 @Module({
-  imports: [TypeOrmModule.forRoot(), GameModule, PublisherModule],
+  imports: [TypeOrmModule.forRoot(), GameModule, PublisherModule, MyValidationPipe],
   controllers: [AppController],
   providers: [AppService],
 })

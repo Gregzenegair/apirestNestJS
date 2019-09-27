@@ -15,21 +15,19 @@ export class PublisherService {
         return this.publisherRepository.find();
     }
 
-    async getUser(id: number): Promise<Publisher[]> {
-        return await this.publisherRepository.find({
-            where: [{ "id": id }]
-        });
+    async findOne(id: number): Promise<Publisher> {
+        return await this.publisherRepository.findOne(id);
     }
 
-    async createPublisher(user: Publisher) {
-        this.publisherRepository.save(user)
+    async createPublisher(publisher: Publisher) {
+        this.publisherRepository.save(publisher)
     }
 
-    async updatePublisher(user: Publisher) {
-        this.publisherRepository.save(user)
+    async updatePublisher(publisher: Publisher) {
+        this.publisherRepository.save(publisher)
     }
 
-    async deletePublisher(user: Publisher) {
-        this.publisherRepository.delete(user);
+    async deletePublisher(id: number) {
+        this.publisherRepository.delete(id);
     }
 }
