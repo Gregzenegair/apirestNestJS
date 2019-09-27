@@ -1,0 +1,10 @@
+{
+    "type": "mysql",
+    "host": "localhost",
+    "port": 3306,
+    "username": "apirest",
+    "password": "72M13B1HQMhrc3Es$",
+    "database": "apirest",
+    "entities": ["src/**/*.entity{.ts,.js}"],
+    "synchronize": true
+  }
