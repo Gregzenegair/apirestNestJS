@@ -1,4 +1,4 @@
-import { Controller, Get, Param, Delete, Put, Post, Body, Res, HttpStatus } from '@nestjs/common';
+import { Controller, Get, Param, Delete, Put, Post, Body, Res, HttpStatus, HttpCode, HttpException } from '@nestjs/common';
 import { Game } from './game.entity';
 import { GameService } from './game.service';
 import { Response } from 'express';
@@ -18,37 +18,53 @@ export class GameController {
 
   @Get(':id/publisher')
   async findOnePublisher(@Param('id') id: number): Promise<Publisher> {
-    let game: Promise<Game> = this.gameService.findOne(id);
-    let publisher: Publisher = null;
-    await game.then(function(gamePromise) {
-       publisher = gamePromise.publisher;
-    });
+    let game: Game = await this.gameService.findOne(id);
+    let publisher: Publisher = game.publisher;
     return publisher;
   }
 
   @Get(':id')
-  findOne(@Param('id') id: number): Promise<Game> {
-    return this.gameService.findOne(id);
+  async findOne(@Param('id') id: number): Promise<Game> {
+    let result = await this.gameService.findOne(id);
+    if (null != result) {
+      return result;
+    } else {
+      throw new HttpException("Game not found", HttpStatus.NOT_FOUND);
+    }
   }
 
   @Post()
-  create(@Res() response: Response, @Body() game: Game) {
-    const out = this.gameService.createGame(game).catch(err => response.status(HttpStatus.BAD_REQUEST).send());
-    response.send(out);
+  async create(@Body() game: Game) {
+    const result = await this.gameService.createGame(game);
+    if (result) {
+      return result;
+    } else {
+      throw new HttpException("Game not created", HttpStatus.BAD_REQUEST);
+    }
   }
 
   @Put()
-  update(@Res() response: Response, @Body() game: Game) {
-    const out = this.gameService.updateGame(game).catch(err => response.status(HttpStatus.BAD_REQUEST).send());
-    response.send(out);
+  async update(@Body() game: Game) {
+    const result = await this.gameService.updateGame(game);
+    if (result) {
+      return result;
+    } else {
+      throw new HttpException("Game not updated", HttpStatus.NOT_FOUND);
+    }
   }
 
   @Delete(':id')
-  delete(@Res() response: Response, @Param('id') id: number) {
-    const out = this.gameService.deleteGame(id).catch(err => response.status(HttpStatus.BAD_REQUEST).send());
-    response.send(out);
+  async delete(@Param('id') id: number) {
+    const result = await this.gameService.deleteGame(id);
+    console.log(result);
+    if (result) {
+      return result;
+    } else {
+      throw new HttpException("Game not deleted", HttpStatus.NOT_FOUND);
+    }
   }
 
+  @HttpCode(200)
   @Post('/triggerCleanProcess')
   deleteTooOldGames() {
     this.gameHelper.removeOldGames();

@@ -20,11 +20,18 @@ export class PublisherService {
     }
 
     async createPublisher(publisher: Publisher) {
-        this.publisherRepository.save(publisher)
+        this.publisherRepository.save(publisher);
     }
 
     async updatePublisher(publisher: Publisher) {
-        this.publisherRepository.save(publisher)
+        if (null == publisher.id) {
+            return null;
+        }
+        let existingPublisher = await this.findOne(publisher.id);
+        if (null == existingPublisher) {
+            return null;
+        }
+        return await this.publisherRepository.save(publisher);
     }
 
     async deletePublisher(id: number) {

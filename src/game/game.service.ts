@@ -6,8 +6,6 @@ import { Game } from "./game.entity";
 @Injectable()
 export class GameService {
 
-
-
     constructor(
         @InjectRepository(Game)
         private readonly gameRepository: Repository<Game>,
@@ -26,6 +24,13 @@ export class GameService {
     }
 
     async updateGame(game: Game) {
+        if (null == game.id) {
+            return null;
+        }
+        let existingGame = await this.findOne(game.id);
+        if (null == existingGame) {
+            return null;
+        }
         return await this.gameRepository.save(game);
     }
 
