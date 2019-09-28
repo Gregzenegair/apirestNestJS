@@ -49,15 +49,9 @@ export class GameController {
     response.send(out);
   }
 
-  @Delete('/tooOldGames')
-  deleteTooOldGames(@Res() response: Response) {
-    const out = this.gameHelper.removeOldGames();
-    response.send(out);
-  }
-
-  @Put('/applyDiscount')
-  applyDiscount(@Res() response: Response) {
-    const out = this.gameHelper.applyDiscount();
-    response.send(out);
+  @Post('/triggerCleanProcess')
+  deleteTooOldGames() {
+    this.gameHelper.removeOldGames();
+    this.gameHelper.applyDiscount();
   }
 }

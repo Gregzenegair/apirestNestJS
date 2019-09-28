@@ -7,6 +7,11 @@ export class GameHelper {
 
   private discountPercentage: number = 20;
 
+  private deleteOlderCeil: number = 18;
+
+  private discountOlderCeil: number = 18;
+  private discountNewerCeil: number = 12;
+
   constructor(private gameService: GameService) {
   }
 
@@ -18,7 +23,7 @@ export class GameHelper {
     minDate.setTime(0);
 
     let maxDate = new Date();
-    maxDate.setMonth(maxDate.getMonth() - 18);
+    maxDate.setMonth(maxDate.getMonth() - this.deleteOlderCeil);
 
     let games: Promise<Game[]> = this.gameService.findBetweenDates(minDate, maxDate);
     games.then(games => games.forEach(game => {
@@ -29,10 +34,10 @@ export class GameHelper {
 
   applyDiscount() {
     let minDate = new Date();
-    minDate.setMonth(minDate.getMonth() - 18);
+    minDate.setMonth(minDate.getMonth() - this.discountOlderCeil);
 
     let maxDate = new Date();
-    maxDate.setMonth(maxDate.getMonth() - 12);
+    maxDate.setMonth(maxDate.getMonth() - this.discountNewerCeil);
 
     let games: Promise<Game[]> = this.gameService.findBetweenDates(minDate, maxDate);
     games.then(games => games.forEach(game => {
