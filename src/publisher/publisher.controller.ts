@@ -6,34 +6,34 @@ import { Response } from 'express';
 @Controller('publishers')
 export class PublisherController {
 
-  constructor(private publisherService :PublisherService) {
+  constructor(private publisherService: PublisherService) {
   }
 
   @Get()
-  async findAll(): Promise<Publisher[]> {
-    return await this.publisherService.findAll();
+  findAll(): Promise<Publisher[]> {
+    return this.publisherService.findAll();
   }
 
   @Get(':id')
-  async findOne(@Param('id')id :number): Promise<Publisher> {
-    return await this.publisherService.findOne(id);
+  findOne(@Param('id') id: number): Promise<Publisher> {
+    return this.publisherService.findOne(id);
   }
 
   @Post()
-  async create(@Res() response: Response, @Body() game: Publisher) {
-    const out = await this.publisherService.createPublisher(game).catch(err => response.status(HttpStatus.BAD_REQUEST).send());
+  create(@Res() response: Response, @Body() game: Publisher) {
+    const out = this.publisherService.createPublisher(game).catch(err => response.status(HttpStatus.BAD_REQUEST).send());
     response.send(out);
   }
 
   @Put()
-  async update(@Res() response: Response, @Body() game: Publisher) {
-    const out = await this.publisherService.updatePublisher(game).catch(err => response.status(HttpStatus.BAD_REQUEST).send());
+  update(@Res() response: Response, @Body() game: Publisher) {
+    const out = this.publisherService.updatePublisher(game).catch(err => response.status(HttpStatus.BAD_REQUEST).send());
     response.send(out);
   }
 
   @Delete(':id')
-  async delete(@Res() response: Response, @Param('id') id: number) {
-    const out = await this.publisherService.deletePublisher(id).catch(err => response.status(HttpStatus.BAD_REQUEST).send());
+  delete(@Res() response: Response, @Param('id') id: number) {
+    const out = this.publisherService.deletePublisher(id).catch(err => response.status(HttpStatus.BAD_REQUEST).send());
     response.send(out);
   }
 }

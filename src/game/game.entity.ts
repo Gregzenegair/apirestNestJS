@@ -1,9 +1,10 @@
-import { Entity, Column, PrimaryGeneratedColumn, ManyToOne, JoinColumn } from 'typeorm';
-import { Publisher } from 'src/publisher/publisher.entity';
+import { Entity, Column, PrimaryGeneratedColumn, ManyToOne } from 'typeorm';
 import { Type } from 'class-transformer';
+import { Publisher } from '../publisher/publisher.entity';
 
 @Entity()
 export class Game {
+  
   @PrimaryGeneratedColumn()
   id: number;
 
