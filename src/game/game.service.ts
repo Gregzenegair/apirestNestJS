@@ -1,10 +1,12 @@
 import { Injectable } from "@nestjs/common";
 import { InjectRepository } from "@nestjs/typeorm";
-import { Repository, LessThan } from "typeorm";
+import { Repository, LessThan, MoreThan, Between } from "typeorm";
 import { Game } from "./game.entity";
 
 @Injectable()
 export class GameService {
+
+
 
     constructor(
         @InjectRepository(Game)
@@ -31,13 +33,13 @@ export class GameService {
         return await this.gameRepository.delete(id);
     }
 
-    findOlderHeighteen(): Promise<Game[]> {
-        let ceilDate = new Date();
-        ceilDate.setMonth(ceilDate.getMonth() - 18);
+    findBetweenDates(minDate: Date, maxDate: Date): Promise<Game[]> {
+        console.log("morethan mindate=" + minDate);
+        console.log("lessthan maxDate=" + maxDate);
         return this.gameRepository.find({
-            where: {
-                releaseDate : LessThan(ceilDate)
-            }
+            where: [{
+                releaseDate: (Between(minDate, maxDate)),
+            }]
         });
     }
 }

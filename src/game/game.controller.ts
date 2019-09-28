@@ -3,11 +3,12 @@ import { Game } from './game.entity';
 import { GameService } from './game.service';
 import { Response } from 'express';
 import { Publisher } from '../publisher/publisher.entity';
+import { GameHelper } from './game.helper';
 
 @Controller('games')
 export class GameController {
 
-  constructor(private gameService: GameService) {
+  constructor(private gameService: GameService, private gameHelper: GameHelper) {
   }
 
   @Get()
@@ -45,6 +46,18 @@ export class GameController {
   @Delete(':id')
   delete(@Res() response: Response, @Param('id') id: number) {
     const out = this.gameService.deleteGame(id).catch(err => response.status(HttpStatus.BAD_REQUEST).send());
+    response.send(out);
+  }
+
+  @Delete('/tooOldGames')
+  deleteTooOldGames(@Res() response: Response) {
+    const out = this.gameHelper.removeOldGames();
+    response.send(out);
+  }
+
+  @Put('/applyDiscount')
+  applyDiscount(@Res() response: Response) {
+    const out = this.gameHelper.applyDiscount();
     response.send(out);
   }
 }
