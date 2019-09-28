@@ -1,10 +1,17 @@
 import { Controller, Get, Param, Delete, Put, Post, Body, Res, HttpStatus, HttpCode, HttpException } from '@nestjs/common';
 import { Game } from './game.entity';
 import { GameService } from './game.service';
-import { Response } from 'express';
-import { Publisher } from '../publisher/publisher.entity';
+import { Publisher } from './../publisher/publisher.entity';
 import { GameHelper } from './game.helper';
 
+/**
+ * This component will expose a REST api providing CRUD operations to fetch one or several games,
+ * create, update and delete a game. Though this api, it will also be possible:
+ * - Fetch only the publisher data for a given game (without any publishers dedicated API – i.e. only by
+ * using the game API)
+ * - To trigger a process which will automatically remove the games having a release date older than 18
+ * months and apply a discount of 20% to all games having a release date between 12 and 18 months.
+ */
 @Controller('games')
 export class GameController {
 

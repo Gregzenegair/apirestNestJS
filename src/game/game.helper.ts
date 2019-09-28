@@ -25,13 +25,16 @@ export class GameHelper {
     let maxDate = new Date();
     maxDate.setMonth(maxDate.getMonth() - this.deleteOlderCeil);
 
-    let games: Promise<Game[]> = this.gameService.findBetweenDates(minDate, maxDate);
+    let games: Promise<Game[]> = this.gameService.findReleaseBetweenDates(minDate, maxDate);
     games.then(games => games.forEach(game => {
       console.log("Deleting too old game : " + game.title + " realeased : " + game.releaseDate);
       this.gameService.deleteGame(game.id);
     }));
   }
 
+  /**
+   * apply a discount of 20% to all games having a release date between 12 and 18 months.
+   */
   applyDiscount() {
     let minDate = new Date();
     minDate.setMonth(minDate.getMonth() - this.discountOlderCeil);
@@ -39,7 +42,7 @@ export class GameHelper {
     let maxDate = new Date();
     maxDate.setMonth(maxDate.getMonth() - this.discountNewerCeil);
 
-    let games: Promise<Game[]> = this.gameService.findBetweenDates(minDate, maxDate);
+    let games: Promise<Game[]> = this.gameService.findReleaseBetweenDates(minDate, maxDate);
     games.then(games => games.forEach(game => {
       console.log("Discounting 20% game " + game.title + " realeased " + game.releaseDate + " which current prise is " + game.price);
 

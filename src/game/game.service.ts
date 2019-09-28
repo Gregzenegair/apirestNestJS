@@ -38,9 +38,7 @@ export class GameService {
         return await this.gameRepository.delete(id);
     }
 
-    findBetweenDates(minDate: Date, maxDate: Date): Promise<Game[]> {
-        console.log("morethan mindate=" + minDate);
-        console.log("lessthan maxDate=" + maxDate);
+    async findReleaseBetweenDates(minDate: Date, maxDate: Date): Promise<Game[]> {
         return this.gameRepository.find({
             where: [{
                 releaseDate: (Between(minDate, maxDate)),
