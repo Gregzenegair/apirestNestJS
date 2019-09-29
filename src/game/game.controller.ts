@@ -63,7 +63,6 @@ export class GameController {
   @Delete(':id')
   async delete(@Param('id') id: number) {
     const result = await this.gameService.deleteGame(id);
-    console.log(result);
     if (result) {
       return result;
     } else {

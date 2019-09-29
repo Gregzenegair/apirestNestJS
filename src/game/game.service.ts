@@ -1,6 +1,6 @@
 import { Injectable } from "@nestjs/common";
 import { InjectRepository } from "@nestjs/typeorm";
-import { Repository, LessThan, MoreThan, Between } from "typeorm";
+import { Repository, Between } from "typeorm";
 import { Game } from "./game.entity";
 
 @Injectable()

@@ -1,4 +1,4 @@
-import { Controller, Get, Param, Delete, Put, Post, Body, Res, HttpStatus } from '@nestjs/common';
+import { Controller, Get, Param, Delete, Put, Post, Body, Res, HttpStatus, HttpException } from '@nestjs/common';
 import { Publisher } from './publisher.entity';
 import { PublisherService } from './publisher.service';
 import { Response } from 'express';
@@ -15,25 +15,43 @@ export class PublisherController {
   }
 
   @Get(':id')
-  findOne(@Param('id') id: number): Promise<Publisher> {
-    return this.publisherService.findOne(id);
+  async findOne(@Param('id') id: number): Promise<Publisher> {
+    let result = await this.publisherService.findOne(id);
+    if (null != result) {
+      return result;
+    } else {
+      throw new HttpException("Publisher not found", HttpStatus.NOT_FOUND);
+    }
   }
 
   @Post()
-  create(@Res() response: Response, @Body() game: Publisher) {
-    const out = this.publisherService.createPublisher(game).catch(err => response.status(HttpStatus.BAD_REQUEST).send());
-    response.send(out);
+  async create(@Body() game: Publisher) {
+    const result = await this.publisherService.createPublisher(game);
+    if (result) {
+      return result;
+    } else {
+      throw new HttpException("Publisher not created", HttpStatus.BAD_REQUEST);
+    }
   }
 
   @Put()
-  update(@Res() response: Response, @Body() game: Publisher) {
-    const out = this.publisherService.updatePublisher(game).catch(err => response.status(HttpStatus.BAD_REQUEST).send());
-    response.send(out);
+  async update(@Body() game: Publisher) {
+    const result = await this.publisherService.updatePublisher(game);
+    if (result) {
+      return result;
+    } else {
+      throw new HttpException("Publisher not updated", HttpStatus.NOT_FOUND);
+    }
   }
 
   @Delete(':id')
-  delete(@Res() response: Response, @Param('id') id: number) {
-    const out = this.publisherService.deletePublisher(id).catch(err => response.status(HttpStatus.BAD_REQUEST).send());
-    response.send(out);
+  async delete(@Param('id') id: number) {
+    const result = await this.publisherService.deletePublisher(id);
+    if (result) {
+      return result;
+    } else {
+      throw new HttpException("Publisher not deleted", HttpStatus.NOT_FOUND);
+    }
   }
+
 }

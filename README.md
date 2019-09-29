@@ -1,32 +1,25 @@
 ## Installation
 
+Beforehand requires Mysql client, if not installed execute :
 ```bash
-$ npm install
+$ sudo apt install mysql-client-core-5.7
+```
+
+```bash
+$ ./runmysql.sh
+$ sudo docker image build . -t apirest
+```
+
+```bash
+$ ./runmysql.sh
+$ sudo docker image build . -t apirest
 ```
 
 ## Running the app
 
 ```bash
 # development
-$ npm run start
-
-# watch mode
-$ npm run start:dev
-
-# production mode
-$ npm run start:prod
-```
-
-## Test
-
-```bash
-# unit tests
-$ npm run test
-
-# e2e tests
-$ npm run test:e2e
-
-# test coverage
-$ npm run test:cov
+$ ./startmysql.sh
+$ sudo docker run -p 3000:3000 --net host apirest
 ```
 

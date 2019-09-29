@@ -20,7 +20,7 @@ export class PublisherService {
     }
 
     async createPublisher(publisher: Publisher) {
-        this.publisherRepository.save(publisher);
+        return await this.publisherRepository.save(publisher);
     }
 
     async updatePublisher(publisher: Publisher) {
@@ -35,6 +35,6 @@ export class PublisherService {
     }
 
     async deletePublisher(id: number) {
-        this.publisherRepository.delete(id);
+        return await this.publisherRepository.delete(id);
     }
 }
